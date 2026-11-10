@@ -2,11 +2,12 @@ from db.models import User
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select
+from db.security import hash_password
 
 def create_user(session: Session, username: str, email: str, password: str, role_id: int) -> User:
     """ Создание нового пользователя """
     try:
-        new_user = User(username=username, email=email, password=password, role_id=role_id)
+        new_user = User(username=username, email=email, password=hash_password(password), role_id=role_id)
         session.add(new_user)
         session.commit()
         session.refresh(new_user) # получаем user_id
@@ -22,6 +23,11 @@ def get_user_by_id(session: Session, user_id: int) -> User:
         raise LookupError(f"Ошибка: Пользователя с ID {user_id} не существует!")  
     return user  
 
+def get_user_by_username(session: Session, username: str) -> User | None:
+    """ Получение пользователя по username. Возвращает None, если не найден. """
+    stmt = select(User).where(User.username == username)
+    return session.scalars(stmt).first()
+
 def get_all_users(session: Session) -> list[User]:
     """ Получение списка всех пользователей """
     all_users = select(User)
@@ -36,7 +42,7 @@ def update_user(session: Session, user_id: int, new_username: str = None, new_em
         if new_email:
             user.email = new_email
         if new_password:
-            user.password = new_password
+            user.password = hash_password(new_password)
         session.commit()
         session.refresh(user)
         return user

@@ -3,10 +3,12 @@ from db.crud import role
 from db.crud import article
 from db.crud import tag
 from db.crud import m2m_relationships
+from db.security import hash_password, verify_password
 
 from db.crud.user import (
     create_user,
     get_user_by_id,
+    get_user_by_username,
     get_all_users,
     update_user,
     deactive_user,
@@ -53,7 +55,7 @@ from db.crud.m2m_relationships import (
 
 __all__ = [
     # user
-    "create_user", "get_user_by_id", "get_all_users", "update_user", "deactive_user",
+    "create_user", "get_user_by_id", "get_user_by_username", "get_all_users", "update_user", "deactive_user",
     # role
     "create_role", "get_role_by_id", "get_all_roles", "update_role", "delete_role",
     # article
@@ -67,4 +69,6 @@ __all__ = [
     "get_user_subscriptions", "get_tag_subscriptions", "set_notification",
     "get_notification_recipients", "get_notification_recipients_for_article",
     "get_user_notification_settings",
+
+    "hash_password", "verify_password",
 ]
