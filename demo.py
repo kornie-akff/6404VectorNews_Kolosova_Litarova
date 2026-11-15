@@ -239,10 +239,6 @@ def scendrio_liked_articles_tags(session, data):
     all_tags = {t.tag_name for a in all_liked_articles for t in a.tags}
     print (f"Tags of articles liked by Victoria: {all_tags}")
 
-    
-
-    art = crud.get_articles
-
 # Точка входа
 
 def main() -> None:
