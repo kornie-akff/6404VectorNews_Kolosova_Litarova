@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package recommendations;
+
+// Сервис рекомендаций похожих статей (коллаборативная фильтрация по лайкам)
+service RecommendationService {
+  rpc GetSimilarArticles (SimilarArticlesRequest) returns (SimilarArticlesResponse);
+}
+
+message SimilarArticlesRequest {
+  int32 article_id = 1;
+  int32 limit = 2;          // сколько вернуть (по умолчанию 5)
+}
+
+message SimilarArticle {
+  int32 article_id = 1;
+  string article_title = 2;
+  int32 author_id = 3;
+  int32 common_likers = 4;  // сколько общих лайкеров — для наглядности
+}
+
+message SimilarArticlesResponse {
+  repeated SimilarArticle articles = 1;
+}

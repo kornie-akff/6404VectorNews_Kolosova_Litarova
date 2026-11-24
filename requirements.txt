@@ -5,3 +5,6 @@ psycopg2-binary
 pydantic[email]
 email-validator
 passlib[bcrypt]
+grpcio
+grpcio-tools
+protobuf

@@ -7,7 +7,7 @@ import schemas
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/register", response_model=schemas.UserOut, status_code=201)
+@router.post("/register", status_code=201)
 def register(data: schemas.UserCreate, db: Session = Depends(get_db)):
     try:
         return crud.create_user(db, data.username, data.email, data.password, role_id=2)  # reader

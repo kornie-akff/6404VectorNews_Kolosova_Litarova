@@ -25,3 +25,12 @@ class ArticleDetailOut(ArticleOut):
     tags: List[TagOut] = Field(default_factory=list)
     class Config:
         from_attributes = True
+
+class SimilarArticleOut(BaseModel):
+    article_id: int
+    article_title: str
+    author_id: int
+    common_likers: int
+
+class ArticleDetailWithRecommendationsOut(ArticleDetailOut):
+    similar_articles: List[SimilarArticleOut] = Field(default_factory=list)

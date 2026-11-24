@@ -52,6 +52,7 @@ from db.crud.m2m_relationships import (
     get_notification_recipients_for_article,
     get_user_notification_settings,
 )
+from db.crud.recommendations import get_similar_articles
 
 __all__ = [
     # user
@@ -71,4 +72,6 @@ __all__ = [
     "get_user_notification_settings",
 
     "hash_password", "verify_password",
+
+    "get_similar_articles",
 ]
