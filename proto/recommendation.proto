@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package recommendation;
+
+service RecommendationService {
+  rpc GetRecommendedArticles (RecommendationRequest) returns (RecommendationResponse);
+}
+
+message RecommendationRequest {
+  int32 article_id = 1;   // <-- было user_id, стало article_id
+}
+
+message RecommendedArticle {
+  int32 article_id = 1;
+  string title = 2;
+  int32 score = 3;
+  string reason = 4;
+}
+
+message RecommendationResponse {
+  repeated RecommendedArticle articles = 1;
+}
