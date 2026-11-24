@@ -68,3 +68,10 @@ def delete_article(article_id: int, db: Session = Depends(get_db), admin = Depen
         return {"message": crud.delete_article(db, article_id)}
     except ValueError as e:
         raise HTTPException(404, str(e))
+
+@router.get("/{article_id}/likes", response_model=list[schemas.UserOut])
+def article_likes(article_id: int, db: Session = Depends(get_db)):
+    try:
+        return crud.m2m_relationships.get_article_likes(db, article_id)
+    except (ValueError, LookupError) as e:
+        raise HTTPException(404, str(e))
