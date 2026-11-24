@@ -16,7 +16,6 @@ class ArticleUpdate(BaseModel):
 
 class ArticleOut(ArticleBase):
     article_id: int
-    author_id: int
     created_time: datetime
     class Config:
         from_attributes = True
@@ -25,3 +24,11 @@ class ArticleDetailOut(ArticleOut):
     tags: List[TagOut] = Field(default_factory=list)
     class Config:
         from_attributes = True
+
+class SimilarArticleOut(BaseModel):
+    article_id: int
+    article_title: str
+    common_likers: int
+
+class ArticleDetailWithRecommendationsOut(ArticleDetailOut):
+    similar_articles: List[SimilarArticleOut] = []
