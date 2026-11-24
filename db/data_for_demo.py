@@ -135,7 +135,8 @@ def seed_all(session: Session) -> dict:
     }
 
 if __name__ == "__main__":
-    from db.connect import Base, engine, SessionLocal
+    from db.connect import engine, SessionLocal
+    from db.models import Base
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind = engine)
     with SessionLocal() as session:
