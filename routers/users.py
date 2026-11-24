@@ -41,6 +41,13 @@ def update_user(
     except ValueError as e:
         raise HTTPException(400, str(e))
 
+@router.get("/{user_id}/likes", response_model=list[schemas.ArticleOut])
+def user_likes(user_id: int, db: Session = Depends(get_db)):
+    try:
+        return crud.m2m_relationships.get_user_likes(db, user_id)
+    except LookupError as e:
+        raise HTTPException(404, str(e))
+
 @router.delete("/{user_id}")
 def deactivate(user_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
 
