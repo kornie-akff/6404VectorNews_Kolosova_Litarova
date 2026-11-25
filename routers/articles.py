@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from db.connect import get_db
 from db import crud
+from db.models.associations import likes
 from dependencies import get_current_user, require_admin
 import schemas
 
@@ -32,8 +33,19 @@ def get_article(
     except (ValueError, LookupError) as e:
         raise HTTPException(404, str(e))
 
-    # Вызов gRPC!
-    similar = recommender(article_id, limit=5)
+    all_likes_db = db.query(likes.c.user_id, likes.c.article_id).all()
+    likes_list = [{"user_id": row.user_id, "article_id": row.article_id} for row in all_likes_db]
+
+    similar = recommender(article_id, likes_list)
+    
+    similar_with_titles = []
+    for item in similar:
+        sim_art = crud.get_article_by_id(db, item["article_id"])
+        similar_with_titles.append({
+            "article_id": sim_art.article_id,
+            "article_title": sim_art.article_title,
+            "common_likers": item["score"]
+        })
 
     return schemas.ArticleDetailWithRecommendationsOut(
         article_id=article.article_id,
@@ -42,7 +54,7 @@ def get_article(
         content=article.content,
         created_time=article.created_time,
         tags=[schemas.TagOut.model_validate(t) for t in article.tags],
-        similar_articles=similar,
+        similar_articles=similar_with_titles,
     )
 
 @router.post("/", response_model=schemas.ArticleOut, status_code=201)

@@ -45,7 +45,8 @@ class RecommendationServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
     def GetRecommendedArticles(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """На вход подаем лайки, на выходе — рекомендации
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
