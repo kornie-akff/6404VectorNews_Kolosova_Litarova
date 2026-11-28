@@ -14,6 +14,7 @@ message Like {
 message RecommendationRequest {
   int32 target_article_id = 1;
   repeated Like all_likes = 2;
+  int32 current_user_id = 3;
 }
 
 message RecommendedArticle {

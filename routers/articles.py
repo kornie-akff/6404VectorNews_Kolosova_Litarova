@@ -27,6 +27,7 @@ def get_article(
     article_id: int,
     db: Session = Depends(get_db),
     recommender = Depends(get_recommender), # Внедрение зависимости!
+    current_user = Depends(get_current_user),
 ):
     try:
         article = crud.get_article_by_id(db, article_id)
@@ -36,7 +37,7 @@ def get_article(
     all_likes_db = db.query(likes.c.user_id, likes.c.article_id).all()
     likes_list = [{"user_id": row.user_id, "article_id": row.article_id} for row in all_likes_db]
 
-    similar = recommender(article_id, likes_list)
+    similar = recommender(article_id, likes_list, current_user.user_id)
     
     similar_with_titles = []
     for item in similar:
